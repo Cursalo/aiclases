@@ -1,35 +1,30 @@
 # AIClases Deployment Guide
 
 ## Current Repository Structure
-This repository contains the AIClases 4.0 application in a monorepo structure with the following layout:
+This repository contains the AIClases 4.0 application as a clean Next.js project with the following layout:
 
 ```
-├── apps/
-│   └── web/          # Next.js main application
-├── packages/
-│   ├── ai/           # AI utilities
-│   └── ui/           # Shared UI components
+├── app/              # Next.js App Router
+├── components/       # React components
+├── lib/              # Utilities and business logic
 ├── docs/             # Documentation
+├── e2e/              # Playwright tests
+├── public/           # Static assets
 ├── vercel.json       # Vercel deployment configuration
-└── package.json      # Root package.json for monorepo
+└── package.json      # Project dependencies
 ```
 
 ## Vercel Deployment Instructions
 
-### Option 1: Current Monorepo Structure (Recommended)
+### Standard Next.js Deployment (Recommended)
 1. Connect your GitHub repository to Vercel
-2. In Vercel dashboard, **do not** select a root directory - leave it empty
-3. Vercel will automatically use the configuration from `vercel.json`
-4. The build will use:
-   - Install command: `cd apps/web && npm install`
-   - Build command: `cd apps/web && npm run build`
-   - Output directory: `apps/web/.next`
-
-### Option 2: If Vercel Root Directory Selection is Required
-If Vercel interface forces you to select a root directory:
-1. Select `apps/web` as the root directory
-2. Update `vercel.json` to remove the custom install/build commands
-3. Let Vercel auto-detect the Next.js framework
+2. Vercel will automatically detect this as a Next.js project
+3. **No root directory selection needed** - deploy from repository root
+4. Vercel will automatically use:
+   - Framework: Next.js
+   - Build command: `npm run build`
+   - Output directory: `.next`
+   - Install command: `npm install`
 
 ## Environment Variables Required
 Make sure to set these in Vercel:
