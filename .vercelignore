@@ -1,7 +1,4 @@
-# Ignore packages directory for web app deployment
-packages/
-apps/docs/
-apps/mobile/
+# Development and test files
 
 # Ignore development files
 *.md
