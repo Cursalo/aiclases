@@ -4,7 +4,6 @@ import GitHubProvider from 'next-auth/providers/github'
 import EmailProvider from 'next-auth/providers/email'
 import { SupabaseAdapter } from '@auth/supabase-adapter'
 import { createClient } from '@supabase/supabase-js'
-import jwt from 'jsonwebtoken'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -57,23 +56,6 @@ export const authOptions: NextAuthOptions = {
   },
   jwt: {
     maxAge: 30 * 24 * 60 * 60, // 30 days
-    encode: async ({ secret, token }) => {
-      const encodedToken = jwt.sign(token!, secret, {
-        algorithm: 'HS256',
-      })
-      return encodedToken
-    },
-    decode: async ({ secret, token }) => {
-      try {
-        const decodedToken = jwt.verify(token!, secret, {
-          algorithms: ['HS256'],
-        })
-        return decodedToken as any
-      } catch (error) {
-        console.error('JWT decode error:', error)
-        return null
-      }
-    },
   },
   pages: {
     signIn: '/login',

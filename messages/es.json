@@ -6,6 +6,22 @@
     "keywords": "inteligencia artificial, machine learning, deep learning, cursos online, educación, tecnología, IA, python, datos",
     "author": "AIClases Team"
   },
+  "Navigation": {
+    "courses": "Cursos",
+    "dashboard": "Panel",
+    "login": "Iniciar Sesión"
+  },
+  "Footer": {
+    "description": "Aprende Inteligencia Artificial con nuestro mentor de IA personalizado, cursos actualizados en tiempo real y una comunidad de expertos.",
+    "quickLinks": "Enlaces Rápidos",
+    "legal": "Legal",
+    "courses": "Cursos",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio",
+    "allRightsReserved": "Todos los derechos reservados."
+  },
   "common": {
     "loading": "Cargando...",
     "error": "Error",
