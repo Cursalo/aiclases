@@ -1,8 +1,25 @@
-import { OpenAI } from 'openai'
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-})
+// MVP: Mock OpenAI implementation
+const mockOpenAI = {
+  chat: {
+    completions: {
+      create: async (params: any) => ({
+        choices: [{
+          message: {
+            content: JSON.stringify({
+              answer: "¡Hola! Soy tu mentor de IA. Esta es una respuesta de demostración para el MVP. En producción, usaría OpenAI para generar respuestas personalizadas basadas en tu pregunta.",
+              suggestions: [
+                "Explora más cursos en nuestra plataforma",
+                "Practica los conceptos que acabas de aprender",
+                "Únete a nuestra comunidad de estudiantes"
+              ],
+              confidence: 0.85
+            })
+          }
+        }]
+      })
+    }
+  }
+}
 
 export interface MentorRequest {
   message: string
@@ -32,7 +49,7 @@ Instrucciones:
 6. Sugiere próximos pasos de aprendizaje cuando sea apropiado`
 
   try {
-    const completion = await openai.chat.completions.create({
+    const completion = await mockOpenAI.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
         { role: 'system', content: systemPrompt },
