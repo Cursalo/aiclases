@@ -4,10 +4,12 @@ import { createClient } from '@supabase/supabase-js'
 import { Database } from '@/types/database'
 import Stripe from 'stripe'
 
-const supabase = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+// MVP: Create Supabase client with fallback values for build time
+const getSupabaseClient = () => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mock.supabase.co'
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'mock-key'
+  return createClient<Database>(supabaseUrl, supabaseKey)
+}
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!
 
@@ -88,6 +90,7 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
   }
 
   // Update transaction status to completed
+  const supabase = getSupabaseClient()
   const { error: updateError } = await supabase
     .from('credit_transactions')
     .update({
@@ -164,6 +167,7 @@ async function handlePaymentIntentFailed(paymentIntent: Stripe.PaymentIntent) {
   console.log('Payment failed:', paymentIntent.id, paymentIntent.last_payment_error?.message)
   
   // Update any pending transactions to failed
+  const supabase = getSupabaseClient()
   const { error } = await supabase
     .from('credit_transactions')
     .update({
@@ -190,6 +194,7 @@ async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
   }
 
   // Create subscription record
+  const supabase = getSupabaseClient()
   const { error } = await supabase
     .from('user_subscriptions')
     .insert({
@@ -211,6 +216,7 @@ async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
 }
 
 async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
+  const supabase = getSupabaseClient()
   const { error } = await supabase
     .from('user_subscriptions')
     .update({
@@ -226,6 +232,7 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
 }
 
 async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
+  const supabase = getSupabaseClient()
   const { error } = await supabase
     .from('user_subscriptions')
     .update({
@@ -263,6 +270,7 @@ async function addSubscriptionCredits(subscription: Stripe.Subscription) {
   // Add monthly subscription credits (e.g., 1000 credits per month)
   const monthlyCredits = 1000
   
+  const supabase = getSupabaseClient()
   const { data: currentUser } = await supabase
     .from('user_profiles')
     .select('credits')

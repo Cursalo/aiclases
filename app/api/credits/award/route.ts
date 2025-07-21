@@ -4,10 +4,12 @@ import { authOptions } from '@/lib/auth'
 import { createClient } from '@supabase/supabase-js'
 import { Database } from '@/types/database'
 
-const supabase = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+// MVP: Create Supabase client with fallback values for build time
+const getSupabaseClient = () => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mock.supabase.co'
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'mock-key'
+  return createClient<Database>(supabaseUrl, supabaseKey)
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -37,6 +39,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Start a transaction
+    const supabase = getSupabaseClient()
     const { data, error } = await supabase.rpc('award_credits', {
       p_user_id: session.user.id,
       p_amount: amount,

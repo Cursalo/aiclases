@@ -6,10 +6,12 @@ import {
   validateWebhookSignature 
 } from '@/lib/payments/mercadopago-client'
 
-const supabase = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+// MVP: Create Supabase client with fallback values for build time
+const getSupabaseClient = () => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mock.supabase.co'
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'mock-key'
+  return createClient<Database>(supabaseUrl, supabaseKey)
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -99,6 +101,7 @@ async function handlePaymentNotification(paymentId: string) {
     }
 
     // Find the transaction in our database
+    const supabase = getSupabaseClient()
     const { data: transaction, error: findError } = await supabase
       .from('credit_transactions')
       .select('*')
@@ -168,6 +171,7 @@ async function handlePaymentNotification(paymentId: string) {
 async function processCreditsAward(userId: string, transaction: any) {
   try {
     // Get current user credits
+    const supabase = getSupabaseClient()
     const { data: currentUser, error: userError } = await supabase
       .from('user_profiles')
       .select('credits')

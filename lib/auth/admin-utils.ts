@@ -1,10 +1,12 @@
 import { createClient } from '@supabase/supabase-js'
 import { Database } from '@/types/database'
 
-const supabase = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+// MVP: Create Supabase client with fallback values for build time
+const getSupabaseClient = () => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mock.supabase.co'
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'mock-key'
+  return createClient<Database>(supabaseUrl, supabaseKey)
+}
 
 export type AdminRole = 'super_admin' | 'admin' | 'moderator' | 'content_manager'
 
@@ -21,6 +23,7 @@ export interface AdminUser {
 // Check if user has admin role
 export async function checkAdminRole(userId: string): Promise<boolean> {
   try {
+    const supabase = getSupabaseClient()
     const { data, error } = await supabase
       .from('user_profiles')
       .select('role, is_admin')
@@ -41,6 +44,7 @@ export async function checkAdminRole(userId: string): Promise<boolean> {
 // Get admin user details
 export async function getAdminUser(userId: string): Promise<AdminUser | null> {
   try {
+    const supabase = getSupabaseClient()
     const { data, error } = await supabase
       .from('user_profiles')
       .select(`
@@ -169,6 +173,7 @@ export async function logAdminActivity(
   details: Record<string, any> = {}
 ): Promise<void> {
   try {
+    const supabase = getSupabaseClient()
     await supabase
       .from('admin_activity_logs')
       .insert({
@@ -186,6 +191,7 @@ export async function logAdminActivity(
 // Get admin dashboard stats
 export async function getAdminDashboardStats() {
   try {
+    const supabase = getSupabaseClient()
     const [
       totalUsersResult,
       totalCoursesResult,
@@ -240,6 +246,7 @@ export async function getCourses(
   } = {}
 ) {
   try {
+    const supabase = getSupabaseClient()
     let query = supabase
       .from('courses')
       .select(`
@@ -301,6 +308,7 @@ export async function getUsers(
   } = {}
 ) {
   try {
+    const supabase = getSupabaseClient()
     let query = supabase
       .from('user_profiles')
       .select(`
@@ -351,6 +359,7 @@ export async function validateAdminSession(userId: string): Promise<boolean> {
   
   if (isAdmin) {
     // Update last activity
+    const supabase = getSupabaseClient()
     await supabase
       .from('user_profiles')
       .update({ last_login_at: new Date().toISOString() })

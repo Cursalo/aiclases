@@ -4,10 +4,12 @@ import { authOptions } from '@/lib/auth'
 import { createClient } from '@supabase/supabase-js'
 import { Database } from '@/types/database'
 
-const supabase = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+// MVP: Create Supabase client with fallback values for build time
+const getSupabaseClient = () => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mock.supabase.co'
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'mock-key'
+  return createClient<Database>(supabaseUrl, supabaseKey)
+}
 
 interface ErrorReport {
   errorId: string
@@ -68,6 +70,7 @@ export async function POST(request: NextRequest) {
     // Check if this error already exists (by message and stack trace hash)
     const errorHash = Buffer.from(`${body.message}${body.stack}`.slice(0, 1000)).toString('base64').slice(0, 50)
     
+    const supabase = getSupabaseClient()
     const { data: existingError } = await supabase
       .from('error_logs')
       .select('id, occurrences')
@@ -145,6 +148,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Check if user is admin (simplified check)
+    const supabase = getSupabaseClient()
     const { data: userProfile } = await supabase
       .from('user_profiles')
       .select('role, is_admin')
@@ -163,7 +167,7 @@ export async function GET(request: NextRequest) {
     const level = searchParams.get('level')
     const resolved = searchParams.get('resolved') === 'true'
 
-    let query = supabase
+    let query = getSupabaseClient()
       .from('error_logs')
       .select('*')
       .order('last_occurred_at', { ascending: false })
