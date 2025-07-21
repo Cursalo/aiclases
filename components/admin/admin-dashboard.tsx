@@ -4,9 +4,11 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+// MVP: Use simple components without Radix to avoid createContext errors
+import { Button } from '@/components/ui/button-mvp'
+import { Progress } from '@/components/ui/progress-mvp'
+// MVP: Use simple tabs without Radix to avoid createContext errors
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs-mvp'
 import {
   Users,
   BookOpen,

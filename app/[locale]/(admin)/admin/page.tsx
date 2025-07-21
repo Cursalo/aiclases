@@ -2,7 +2,8 @@ import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { AdminDashboard } from '@/components/admin/admin-dashboard'
+// MVP: Use minimal dashboard without complex components to avoid createContext errors
+import { AdminDashboard } from '@/components/admin/admin-dashboard-minimal'
 import { checkAdminRole } from '@/lib/auth/admin-utils'
 
 export const metadata: Metadata = {

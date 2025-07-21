@@ -11,10 +11,11 @@ import {
   Play,
   CheckCircle
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+// MVP: Use simple components without Radix to avoid createContext errors
+import { Button } from '@/components/ui/button-mvp'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Progress } from '@/components/ui/progress'
+import { Progress } from '@/components/ui/progress-mvp'
 
 const enrolledCourses = [
   {

@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { useToast, useLoadingToast } from '@/components/toast/toast-provider'
+// MVP: Remove toast imports to avoid createContext errors
+// import { useToast, useLoadingToast } from '@/components/toast/toast-provider'
 import { 
   apiRequest, 
   ClientAPIException, 
@@ -33,8 +34,9 @@ export function useLoading<T = any>(initialData: T | null = null) {
     data: initialData,
   })
   
-  const { showToast } = useToast()
-  const loadingToast = useLoadingToast()
+  // MVP: Mock toast functions to avoid context errors
+  const showToast = (args: any) => {}
+  const loadingToast = (message: string) => ({ success: () => {}, error: () => {} })
   const abortControllerRef = useRef<AbortController | null>(null)
   const currentToastRef = useRef<any>(null)
 
@@ -278,7 +280,8 @@ export function useDataFetch<T = any>(initialData: T | null = null) {
 // Hook for async operations with manual control
 export function useAsyncOperation() {
   const [operations, setOperations] = useState<Map<string, LoadingState>>(new Map())
-  const { showToast } = useToast()
+  // MVP: Mock toast function to avoid context errors
+  const showToast = (args: any) => {}
   const abortControllersRef = useRef<Map<string, AbortController>>(new Map())
 
   const startOperation = useCallback(async <T>(

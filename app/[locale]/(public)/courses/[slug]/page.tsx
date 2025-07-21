@@ -17,10 +17,11 @@ import {
   ArrowLeft,
   RefreshCw
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+// MVP: Use simple components without Radix to avoid createContext errors
+import { Button } from '@/components/ui/button-mvp'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Progress } from '@/components/ui/progress'
+import { Progress } from '@/components/ui/progress-mvp'
 import { ErrorBoundary } from '@/components/error-boundary/error-boundary'
 import { 
   VideoPlayerSkeleton, 
@@ -29,7 +30,8 @@ import {
   UserProfileSkeleton 
 } from '@/components/loading/skeleton'
 import { useDataFetch } from '@/hooks/use-loading'
-import { useToast } from '@/components/toast/toast-provider'
+// MVP: Remove toast provider import to avoid createContext errors
+// import { useToast } from '@/components/toast/toast-provider'
 
 interface CoursePageProps {
   params: {
@@ -416,7 +418,8 @@ function CourseContent({ course }: { course: any }) {
 
 export default function CoursePage({ params }: CoursePageProps) {
   const { data: course, isLoading, error, fetch } = useDataFetch(null)
-  const showToast = useToast()
+  // MVP: Mock toast function to avoid context errors
+  const showToast = () => ({ showToast: () => {}, dismissToast: () => {}, dismissAllToasts: () => {}, updateToast: () => {} })
 
   useEffect(() => {
     loadCourse()
