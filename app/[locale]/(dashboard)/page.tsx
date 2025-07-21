@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button-mvp'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress-mvp'
+import { MainLayout } from '@/components/layout/main-layout'
 
 const enrolledCourses = [
   {
@@ -238,16 +239,17 @@ function AchievementCard({ achievement }: { achievement: typeof achievements[0] 
 
 export default function DashboardPage() {
   return (
-    <div className="space-y-8">
-      {/* Welcome Section */}
-      <div>
-        <h1 className="text-3xl md:text-4xl font-bold mb-2">
-          ¡Bienvenido de vuelta! 👋
-        </h1>
-        <p className="text-muted-foreground">
-          Continúa tu viaje de aprendizaje en Inteligencia Artificial
-        </p>
-      </div>
+    <MainLayout>
+      <div className="space-y-8">
+        {/* Welcome Section */}
+        <div>
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">
+            ¡Bienvenido de vuelta! 👋
+          </h1>
+          <p className="text-muted-foreground">
+            Continúa tu viaje de aprendizaje en Inteligencia Artificial
+          </p>
+        </div>
 
       {/* Stats Overview */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -416,5 +418,6 @@ export default function DashboardPage() {
         </div>
       </div>
     </div>
+    </MainLayout>
   )
 }

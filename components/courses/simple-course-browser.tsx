@@ -147,22 +147,22 @@ function CourseCard({ course }: { course: Course }) {
 
 export default function SimpleCoursesBrowser() {
   return (
-    <div className="flex flex-col lg:flex-row gap-8">
-      <div className="flex flex-col lg:flex-row gap-8 mb-12 w-full">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Cursos Disponibles</h2>
-          <p className="text-muted-foreground">Descubre nuestros cursos de IA</p>
-        </div>
+    <div className="space-y-8">
+      {/* Course Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {staticCourses.map((course) => (
+          <CourseCard key={course.id} course={course} />
+        ))}
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-8 w-full">
-        <main className="w-full">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {staticCourses.map((course) => (
-              <CourseCard key={course.id} course={course} />
-            ))}
-          </div>
-        </main>
+      {/* Call to Action */}
+      <div className="text-center py-8">
+        <p className="text-muted-foreground mb-4">
+          ¿No encuentras lo que buscas?
+        </p>
+        <Button variant="outline" className="glass-morphism">
+          Solicitar Curso Personalizado
+        </Button>
       </div>
     </div>
   )
