@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { checkAdminRole } from '@/lib/auth/admin-utils'
 import { createClient } from '@supabase/supabase-js'
-import { Database } from '@database/types/database'
+import { Database } from '@/types/database'
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,

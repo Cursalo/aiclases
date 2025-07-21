@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { createClient } from '@supabase/supabase-js'
-import { Database } from '@database/types/database'
+import { Database } from '@/types/database'
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate required fields
-    const requiredFields = ['errorId', 'message', 'timestamp', 'url', 'level']
+    const requiredFields: (keyof ErrorReport)[] = ['errorId', 'message', 'timestamp', 'url', 'level']
     for (const field of requiredFields) {
       if (!body[field]) {
         return NextResponse.json(

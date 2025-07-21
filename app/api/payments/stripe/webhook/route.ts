@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/payments/stripe-client'
 import { createClient } from '@supabase/supabase-js'
-import { Database } from '@database/types/database'
+import { Database } from '@/types/database'
 import Stripe from 'stripe'
 
 const supabase = createClient<Database>(

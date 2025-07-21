@@ -11,9 +11,21 @@ import { Input } from '@/components/ui/input'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { ErrorBoundary } from '@/components/error-boundary/error-boundary'
 import { CourseGridSkeleton } from '@/components/loading/skeleton'
-import { useDataFetch } from '@/hooks/use-loading'
-import { useToast } from '@/components/toast/toast-provider'
 
+const categories = [
+  { id: 'fundamentos-ia', name: 'Fundamentos de IA', count: 1 },
+  { id: 'machine-learning', name: 'Machine Learning', count: 1 },
+  { id: 'productividad', name: 'Productividad', count: 1 },
+  { id: 'deep-learning', name: 'Deep Learning', count: 1 },
+  { id: 'nlp', name: 'Procesamiento de Lenguaje Natural', count: 1 },
+  { id: 'computer-vision', name: 'Visión por Computadora', count: 1 },
+]
+
+const levels = [
+  { id: 'beginner', name: 'Principiante', color: 'bg-green-500' },
+  { id: 'intermediate', name: 'Intermedio', color: 'bg-yellow-500' },
+  { id: 'advanced', name: 'Avanzado', color: 'bg-red-500' },
+]
 
 interface Course {
   id: string
@@ -123,8 +135,10 @@ function CourseCard({ course }: { course: Course }) {
 }
 
 function CoursesGrid({ searchQuery = '', selectedCategory = '', selectedLevel = '' }) {
-  const { data: courses, isLoading, error, fetch } = useDataFetch([])
-  const [filteredCourses, setFilteredCourses] = useState([])
+  const [courses, setCourses] = useState<Course[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [filteredCourses, setFilteredCourses] = useState<Course[]>([])
 
   useEffect(() => {
     loadCourses()
@@ -135,12 +149,15 @@ function CoursesGrid({ searchQuery = '', selectedCategory = '', selectedLevel = 
   }, [courses, searchQuery, selectedCategory, selectedLevel])
 
   const loadCourses = async () => {
-    // In a real app, this would fetch from an API
-    // For now, we'll simulate loading delay and use static data
-    await new Promise(resolve => setTimeout(resolve, 800))
+    try {
+      setIsLoading(true)
+      setError(null)
+      // In a real app, this would fetch from an API
+      // For now, we'll simulate loading delay and use static data
+      await new Promise(resolve => setTimeout(resolve, 800))
     
-    // Static courses data for demo
-    const staticCourses = [
+      // Static courses data for demo
+      const staticCourses = [
       {
         id: '1',
         title: 'Fundamentos de Inteligencia Artificial',
@@ -239,12 +256,17 @@ function CoursesGrid({ searchQuery = '', selectedCategory = '', selectedLevel = 
       }
     ]
     
-    // Simulate potential API error (5% chance)
-    if (Math.random() < 0.05) {
-      throw new Error('Failed to load courses')
+      // Simulate potential API error (5% chance)
+      if (Math.random() < 0.05) {
+        throw new Error('Failed to load courses')
+      }
+      
+      setCourses(staticCourses)
+      setIsLoading(false)
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Failed to load courses')
+      setIsLoading(false)
     }
-    
-    return staticCourses
   }
 
   const filterCourses = () => {

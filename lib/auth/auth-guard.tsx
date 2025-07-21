@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import { LoadingSpinner } from '@aiclases/ui'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
 interface AuthGuardProps {
   children: React.ReactNode

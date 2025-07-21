@@ -7,6 +7,8 @@ import {
   detectUserCountry,
   getPackagesForCountry,
   formatCurrencyForCountry,
+  getSpecialOffers,
+  getAvailablePaymentMethods,
   MercadoPagoCountry
 } from '@/lib/payments/mercadopago-client'
 
@@ -22,7 +24,10 @@ export async function GET(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url)
-    const requestedCountry = searchParams.get('country') as MercadoPagoCountry
+    const requestedCountryId = searchParams.get('country')
+    const requestedCountry = requestedCountryId 
+      ? MERCADOPAGO_COUNTRIES.find(c => c.id === requestedCountryId) 
+      : null
 
     // Detect user's country
     const userAgent = request.headers.get('user-agent') || ''
@@ -49,13 +54,13 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       country: userCountry,
-      countryInfo: MERCADOPAGO_COUNTRIES[userCountry],
+      countryInfo: userCountry,
       detectedCountry,
       packages: formattedPackages,
-      availableCountries: Object.entries(MERCADOPAGO_COUNTRIES).map(([code, info]) => ({
-        code,
-        name: info.name,
-        currency: info.currency,
+      availableCountries: MERCADOPAGO_COUNTRIES.map(country => ({
+        code: country.id,
+        name: country.name,
+        currency: country.currency,
       })),
       specialOffers,
       paymentMethods: getAvailablePaymentMethods(userCountry),
@@ -67,102 +72,4 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     )
   }
-}
-
-function getSpecialOffers(country: MercadoPagoCountry) {
-  const now = new Date()
-  const offers = []
-
-  // Weekend bonus (Friday to Sunday)
-  const isWeekend = [5, 6, 0].includes(now.getDay())
-  if (isWeekend) {
-    offers.push({
-      id: 'weekend-bonus',
-      title: 'Bono de Fin de Semana',
-      description: '+100 créditos extra en el paquete Popular',
-      validUntil: getNextMonday(),
-      countries: ['AR', 'BR', 'CL', 'CO', 'MX', 'PE', 'UY'],
-    })
-  }
-
-  // First purchase discount
-  offers.push({
-    id: 'first-purchase',
-    title: 'Descuento Primera Compra',
-    description: '15% de descuento en tu primera compra',
-    validUntil: null, // No expiration
-    countries: ['AR', 'BR', 'CL', 'CO', 'MX', 'PE', 'UY'],
-  })
-
-  // Country-specific offers
-  switch (country) {
-    case 'BR':
-      offers.push({
-        id: 'pix-discount',
-        title: 'Desconto PIX',
-        description: '10% de desconto pagando com PIX',
-        validUntil: null,
-        countries: ['BR'],
-      })
-      break
-    
-    case 'AR':
-      offers.push({
-        id: 'cuotas-sin-interes',
-        title: 'Cuotas sin Interés',
-        description: 'Hasta 12 cuotas sin interés',
-        validUntil: null,
-        countries: ['AR'],
-      })
-      break
-    
-    case 'MX':
-      offers.push({
-        id: 'oxxo-promotion',
-        title: 'Promoción OXXO',
-        description: 'Paga en OXXO y recibe créditos extra',
-        validUntil: null,
-        countries: ['MX'],
-      })
-      break
-  }
-
-  return offers.filter(offer => offer.countries.includes(country))
-}
-
-function getAvailablePaymentMethods(country: MercadoPagoCountry) {
-  const paymentMethods: Record<MercadoPagoCountry, string[]> = {
-    AR: ['credit_card', 'debit_card', 'bank_transfer', 'cash', 'wallet_purchase'],
-    BR: ['credit_card', 'debit_card', 'pix', 'bank_transfer', 'boleto', 'wallet_purchase'],
-    CL: ['credit_card', 'debit_card', 'bank_transfer', 'prepaid_card'],
-    CO: ['credit_card', 'debit_card', 'bank_transfer', 'cash', 'wallet_purchase'],
-    MX: ['credit_card', 'debit_card', 'bank_transfer', 'cash', 'wallet_purchase', 'atm'],
-    PE: ['credit_card', 'debit_card', 'bank_transfer', 'cash', 'wallet_purchase'],
-    UY: ['credit_card', 'debit_card', 'bank_transfer', 'cash'],
-  }
-
-  const methodNames: Record<string, string> = {
-    credit_card: 'Tarjeta de Crédito',
-    debit_card: 'Tarjeta de Débito',
-    bank_transfer: 'Transferencia Bancaria',
-    cash: 'Efectivo',
-    pix: 'PIX',
-    boleto: 'Boleto Bancário',
-    wallet_purchase: 'Dinero en Cuenta',
-    prepaid_card: 'Tarjeta Prepagada',
-    atm: 'Cajero Automático',
-  }
-
-  return paymentMethods[country]?.map(method => ({
-    id: method,
-    name: methodNames[method] || method,
-  })) || []
-}
-
-function getNextMonday(): string {
-  const now = new Date()
-  const daysUntilMonday = (8 - now.getDay()) % 7 || 7
-  const nextMonday = new Date(now.getTime() + daysUntilMonday * 24 * 60 * 60 * 1000)
-  nextMonday.setHours(23, 59, 59, 999)
-  return nextMonday.toISOString()
 }

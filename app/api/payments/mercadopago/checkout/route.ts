@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { createClient } from '@supabase/supabase-js'
-import { Database } from '@database/types/database'
+import { Database } from '@/types/database'
 import { 
   createPaymentPreference, 
   detectUserCountry, 

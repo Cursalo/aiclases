@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { Database } from '@database/types/database'
+import { Database } from '@/types/database'
 import { 
   getPaymentInfo, 
   validateWebhookSignature 
@@ -22,9 +22,8 @@ export async function POST(request: NextRequest) {
     // Validate webhook signature
     if (process.env.NODE_ENV === 'production') {
       const isValidSignature = validateWebhookSignature(
-        xSignature,
-        xRequestId,
-        body.data?.id || body.id
+        JSON.stringify(body),
+        xSignature
       )
       
       if (!isValidSignature) {

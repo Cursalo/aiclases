@@ -198,7 +198,7 @@ export function detectLocale(
 
 // Utility function for RTL support (future-proofing)
 export function isRTL(locale: Locale): boolean {
-  return localeConfig[locale].direction === 'rtl'
+  return (localeConfig[locale].direction as string) === 'rtl'
 }
 
 // Utility function to get currency symbol

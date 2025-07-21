@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
     }))
 
     if (!includeFeatures) {
-      packages = packages.map(({ features, ...pkg }) => pkg)
+      packages = packages.map(({ features, ...pkg }) => pkg) as any
     }
 
     // Add dynamic pricing based on user level or special offers
