@@ -221,7 +221,7 @@ export default function middleware(request: NextRequest) {
 
   // Check if route requires authentication
   if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
-    return authMiddleware(request)
+    return (authMiddleware as any)(request)
   }
 
   // For public routes, just run intl middleware

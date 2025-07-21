@@ -30,7 +30,8 @@ class MockDatabaseManager {
   }
 
   getUserByEmail(email: string) {
-    for (const [, user] of this.db.users) {
+    const users = Array.from(this.db.users.values())
+    for (const user of users) {
       if (user.email === email) return user
     }
     return null

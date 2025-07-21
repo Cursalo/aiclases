@@ -192,24 +192,24 @@ export const createTestQuestion = (overrides: Partial<TestQuestion> = {}): TestQ
 }
 
 // Batch creation utilities
-export const createTestUsers = (count: number, overrides: Partial<TestUser> = []): TestUser[] => {
+export const createTestUsers = (count: number, overrides: Partial<TestUser> | Partial<TestUser>[] = {}): TestUser[] => {
   return Array.from({ length: count }, (_, index) => 
-    createTestUser(Array.isArray(overrides) ? overrides[index] : overrides)
+    createTestUser(Array.isArray(overrides) ? overrides[index] || {} : overrides)
   )
 }
 
-export const createTestCourses = (count: number, overrides: Partial<TestCourse> = []): TestCourse[] => {
+export const createTestCourses = (count: number, overrides: Partial<TestCourse> | Partial<TestCourse>[] = {}): TestCourse[] => {
   return Array.from({ length: count }, (_, index) => 
-    createTestCourse(Array.isArray(overrides) ? overrides[index] : overrides)
+    createTestCourse(Array.isArray(overrides) ? overrides[index] || {} : overrides)
   )
 }
 
-export const createTestLessons = (count: number, courseId: string, overrides: Partial<TestLesson> = []): TestLesson[] => {
+export const createTestLessons = (count: number, courseId: string, overrides: Partial<TestLesson> | Partial<TestLesson>[] = {}): TestLesson[] => {
   return Array.from({ length: count }, (_, index) => 
     createTestLesson({
       courseId,
       order: index + 1,
-      ...(Array.isArray(overrides) ? overrides[index] : overrides)
+      ...(Array.isArray(overrides) ? overrides[index] || {} : overrides)
     })
   )
 }

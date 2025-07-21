@@ -144,28 +144,48 @@ export const stripe = {
 export interface CreditPackage {
   id: string
   name: string
+  description: string
   credits: number
   bonus: number
   price: number
   popular: boolean
+  pricePerCredit: number
+  features: string[]
 }
 
 export const CREDIT_PACKAGES: CreditPackage[] = [
   {
     id: 'starter',
     name: 'Paquete Starter',
+    description: 'Ideal para comenzar tu aprendizaje',
     credits: 500,
     bonus: 0,
     price: 29,
-    popular: false
+    popular: false,
+    pricePerCredit: 0.058,
+    features: [
+      '500 créditos para usar',
+      'Acceso a todos los cursos',
+      'Certificados de finalización',
+      'Soporte por email'
+    ]
   },
   {
     id: 'popular', 
     name: 'Paquete Popular',
+    description: 'El más elegido por nuestros estudiantes',
     credits: 1200,
     bonus: 200,
     price: 59,
-    popular: true
+    popular: true,
+    pricePerCredit: 0.042,
+    features: [
+      '1,200 créditos base + 200 bonus',
+      'Acceso a todos los cursos',
+      'Certificados de finalización',
+      'Soporte prioritario',
+      '17% de ahorro'
+    ]
   }
 ]
 
