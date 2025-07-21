@@ -141,7 +141,16 @@ export const stripe = {
 }
 
 // Mock credit packages for MVP
-export const CREDIT_PACKAGES = [
+export interface CreditPackage {
+  id: string
+  name: string
+  credits: number
+  bonus: number
+  price: number
+  popular: boolean
+}
+
+export const CREDIT_PACKAGES: CreditPackage[] = [
   {
     id: 'starter',
     name: 'Paquete Starter',
