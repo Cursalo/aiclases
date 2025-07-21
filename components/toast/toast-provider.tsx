@@ -1,7 +1,6 @@
 'use client'
 
 import React, { createContext, useContext, useState, useCallback } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
 import { 
   X, 
   CheckCircle, 
@@ -130,15 +129,13 @@ function ToastContainer() {
 
   return (
     <div className="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full">
-      <AnimatePresence mode="popLayout">
-        {toasts.map((toast) => (
-          <ToastComponent
-            key={toast.id}
-            toast={toast}
-            onDismiss={() => dismissToast(toast.id)}
-          />
-        ))}
-      </AnimatePresence>
+      {toasts.map((toast) => (
+        <ToastComponent
+          key={toast.id}
+          toast={toast}
+          onDismiss={() => dismissToast(toast.id)}
+        />
+      ))}
     </div>
   )
 }
@@ -201,18 +198,9 @@ function ToastComponent({ toast, onDismiss }: ToastComponentProps) {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 300, scale: 0.9 }}
-      animate={{ opacity: 1, x: 0, scale: 1 }}
-      exit={{ opacity: 0, x: 300, scale: 0.9 }}
-      transition={{ 
-        type: "spring", 
-        stiffness: 300, 
-        damping: 30,
-        duration: 0.3 
-      }}
+    <div
       className={cn(
-        'glass-card border-l-4 p-4 shadow-lg backdrop-blur-sm',
+        'glass-card border-l-4 p-4 shadow-lg backdrop-blur-sm transition-all duration-300 opacity-100 transform translate-x-0 scale-100',
         getBorderColor(),
         getBackgroundColor()
       )}
@@ -251,18 +239,7 @@ function ToastComponent({ toast, onDismiss }: ToastComponentProps) {
           </button>
         )}
       </div>
-      
-      {/* Progress bar for timed toasts */}
-      {toast.duration && toast.duration > 0 && !toast.persistent && (
-        <motion.div
-          initial={{ scaleX: 1 }}
-          animate={{ scaleX: 0 }}
-          transition={{ duration: toast.duration / 1000, ease: "linear" }}
-          className="absolute bottom-0 left-0 h-1 bg-current opacity-20 origin-left"
-          style={{ width: '100%' }}
-        />
-      )}
-    </motion.div>
+    </div>
   )
 }
 

@@ -1,15 +1,5 @@
 import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import { getServerSession } from 'next-auth'
 import { getTranslations } from 'next-intl/server'
-import { NextIntlClientProvider } from 'next-intl'
-import { authOptions } from '@/lib/auth'
-import { AuthProvider } from '@/lib/auth-context'
-import { CreditsProvider } from '@/lib/credits-context'
-import { ErrorBoundary } from '@/components/error-boundary/error-boundary'
-import { ToastProvider } from '@/components/toast/toast-provider'
-import { Navigation } from '@/components/navigation/navigation'
-import { Footer } from '@/components/footer/footer'
 import { locales, type Locale } from '@/i18n'
 
 interface LocaleLayoutProps {
@@ -105,41 +95,17 @@ export default async function LocaleLayout({
   children,
   params: { locale }
 }: LocaleLayoutProps) {
-  // Validate locale
-  if (!locales.includes(locale as Locale)) {
-    notFound()
-  }
 
-  const session = await getServerSession(authOptions)
-  
-  // Get messages for this locale
-  let messages
-  try {
-    messages = (await import(`../../messages/${locale}.json`)).default
-  } catch (error) {
-    console.error(`Failed to load messages for locale: ${locale}`, error)
-    notFound()
-  }
 
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
-      <ErrorBoundary level="critical">
-        <AuthProvider session={session}>
-          <ToastProvider>
-            <CreditsProvider>
-              <ErrorBoundary level="page">
-                <div className="relative flex min-h-screen flex-col">
-                  <Navigation />
-                  <main className="flex-1">
-                    {children}
-                  </main>
-                  <Footer />
-                </div>
-              </ErrorBoundary>
-            </CreditsProvider>
-          </ToastProvider>
-        </AuthProvider>
-      </ErrorBoundary>
-    </NextIntlClientProvider>
+    <html lang={locale}>
+      <body>
+        <div className="relative flex min-h-screen flex-col">
+          <main className="flex-1">
+            {children}
+          </main>
+        </div>
+      </body>
+    </html>
   )
 }
