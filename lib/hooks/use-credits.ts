@@ -2,7 +2,8 @@
 
 import { useState, useCallback } from 'react'
 import { useAuth } from './use-auth'
-import { toast } from 'sonner'
+// MVP: Remove sonner dependency
+// import { toast } from 'sonner'
 
 export interface CreditTransaction {
   id: string
@@ -58,14 +59,14 @@ export function useCredits() {
       const result = await response.json()
       await refreshSession()
       
-      toast.success(`¡Has ganado ${amount} créditos! 🎉`, {
+      console.log(`¡Has ganado ${amount} créditos! 🎉`, {
         description: `Nuevo balance: ${currentBalance + amount} créditos`,
       })
 
       return result.success
     } catch (error) {
       console.error('Error awarding credits:', error)
-      toast.error('Error al otorgar créditos')
+      console.error('Error al otorgar créditos')
       return false
     } finally {
       setIsLoading(false)
@@ -82,7 +83,7 @@ export function useCredits() {
     if (!user) return false
 
     if (currentBalance < amount) {
-      toast.error('Créditos insuficientes', {
+      console.error('Créditos insuficientes', {
         description: `Necesitas ${amount} créditos pero tienes ${currentBalance}`,
         action: {
           label: 'Comprar créditos',
@@ -114,14 +115,14 @@ export function useCredits() {
       const result = await response.json()
       await refreshSession()
       
-      toast.success(`${amount} créditos utilizados`, {
+      console.log(`${amount} créditos utilizados`, {
         description: `Nuevo balance: ${currentBalance - amount} créditos`,
       })
 
       return result.success
     } catch (error) {
       console.error('Error spending credits:', error)
-      toast.error('Error al gastar créditos')
+      console.error('Error al gastar créditos')
       return false
     } finally {
       setIsLoading(false)
@@ -185,19 +186,19 @@ export function useCredits() {
       
       if (result.success) {
         await refreshSession()
-        toast.success('¡Compra exitosa! 🎉', {
+        console.log('¡Compra exitosa! 🎉', {
           description: `Has recibido ${result.credits_purchased} créditos`,
         })
         return true
       } else {
-        toast.error('Error en la compra', {
+        console.error('Error en la compra', {
           description: result.error || 'Intenta nuevamente',
         })
         return false
       }
     } catch (error) {
       console.error('Error purchasing credits:', error)
-      toast.error('Error al procesar la compra')
+      console.error('Error al procesar la compra')
       return false
     } finally {
       setIsLoading(false)

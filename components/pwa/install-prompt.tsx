@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button-mvp'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Download, X, Smartphone, Monitor, Zap } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+// MVP: Remove framer-motion dependency
+// import { motion, AnimatePresence } from 'framer-motion'
 import { useLocalStorage } from '@/lib/hooks/use-local-storage'
 
 interface BeforeInstallPromptEvent extends Event {
@@ -96,11 +97,8 @@ export function InstallPrompt() {
   }
 
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0, y: 100 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 100 }}
+    <div>
+      <div
         className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 z-50"
       >
         <Card className="bg-card/95 backdrop-blur-md border-border/50 shadow-lg">
@@ -172,8 +170,8 @@ export function InstallPrompt() {
             </div>
           </CardContent>
         </Card>
-      </motion.div>
-    </AnimatePresence>
+      </div>
+    </div>
   )
 }
 

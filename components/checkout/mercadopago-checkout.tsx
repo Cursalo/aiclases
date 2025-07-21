@@ -2,14 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useToast } from '@/hooks/use-toast'
-import { Button } from '@/components/ui/button'
+import { useToast } from '@/hooks/use-toast-mvp'
+import { Button } from '@/components/ui/button-mvp'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Separator } from '@/components/ui/separator'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select-mvp'
+import { Separator } from '@/components/ui/separator-mvp'
 import { Check, CreditCard, Globe, MapPin, Star, Zap, Clock, Shield } from 'lucide-react'
-import { motion } from 'framer-motion'
+// MVP: Remove framer-motion dependency
+// import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
 interface MercadoPagoPackage {
@@ -260,12 +261,7 @@ export function MercadoPagoCheckout({ className }: MercadoPagoCheckoutProps) {
       {/* Package Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {packages.map((pkg, index) => (
-          <motion.div
-            key={pkg.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-          >
+          <div key={pkg.id}>
             <Card 
               className={cn(
                 'relative h-full cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02]',
@@ -354,7 +350,7 @@ export function MercadoPagoCheckout({ className }: MercadoPagoCheckoutProps) {
                 </Button>
               </CardFooter>
             </Card>
-          </motion.div>
+          </div>
         ))}
       </div>
 

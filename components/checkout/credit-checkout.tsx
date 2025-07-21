@@ -2,13 +2,14 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useToast } from '@/hooks/use-toast'
-import { Button } from '@/components/ui/button'
+import { useToast } from '@/hooks/use-toast-mvp'
+import { Button } from '@/components/ui/button-mvp'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
+import { Separator } from '@/components/ui/separator-mvp'
 import { Check, CreditCard, Lock, Star, Zap } from 'lucide-react'
-import { motion } from 'framer-motion'
+// MVP: Remove framer-motion dependency
+// import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { CreditPackage, CREDIT_PACKAGES } from '@/lib/payments/stripe-client'
 
@@ -82,12 +83,7 @@ export function CreditCheckout({ selectedPackageId, onPackageSelect, className }
       {/* Package Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {CREDIT_PACKAGES.map((pkg, index) => (
-          <motion.div
-            key={pkg.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-          >
+          <div key={pkg.id}>
             <Card 
               className={cn(
                 'relative h-full cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02]',
@@ -169,7 +165,7 @@ export function CreditCheckout({ selectedPackageId, onPackageSelect, className }
                 </Button>
               </CardFooter>
             </Card>
-          </motion.div>
+          </div>
         ))}
       </div>
 

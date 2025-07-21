@@ -2,11 +2,11 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { Send, Bot, User, Zap, BookOpen, Code, Lightbulb, Trash2, Download } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button-mvp'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea } from '@/components/ui/scroll-area-mvp'
 
 interface Message {
   id: string

@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+// MVP: Remove framer-motion dependency
+// import { motion } from 'framer-motion'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 // MVP: Use simple components without Radix to avoid createContext errors
@@ -27,22 +28,23 @@ import {
   RefreshCw,
   Calendar,
 } from 'lucide-react'
-import {
-  LineChart,
-  Line,
-  AreaChart,
-  Area,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-} from 'recharts'
+// MVP: Remove recharts dependency - use simple visualization
+// import {
+//   LineChart,
+//   Line,
+//   AreaChart,
+//   Area,
+//   BarChart,
+//   Bar,
+//   XAxis,
+//   YAxis,
+//   CartesianGrid,
+//   Tooltip,
+//   ResponsiveContainer,
+//   PieChart,
+//   Pie,
+//   Cell,
+// } from 'recharts'
 
 interface AdminDashboardProps {
   userId: string
@@ -320,11 +322,7 @@ export function AdminDashboard({ userId }: AdminDashboardProps) {
 
       {/* Quick Stats */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
+        <div>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Usuarios</CardTitle>
@@ -337,13 +335,9 @@ export function AdminDashboard({ userId }: AdminDashboardProps) {
               </p>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
+        <div>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Ingresos Totales</CardTitle>
@@ -356,13 +350,9 @@ export function AdminDashboard({ userId }: AdminDashboardProps) {
               </p>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
+        <div>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Usuarios Activos</CardTitle>
@@ -375,13 +365,9 @@ export function AdminDashboard({ userId }: AdminDashboardProps) {
               </p>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
+        <div>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Tasa de Finalización</CardTitle>
@@ -392,7 +378,7 @@ export function AdminDashboard({ userId }: AdminDashboardProps) {
               <Progress value={stats.completionRate} className="mt-2" />
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
       </div>
 
       {/* System Alerts */}
@@ -444,21 +430,13 @@ export function AdminDashboard({ userId }: AdminDashboardProps) {
                 <CardTitle>Crecimiento de Usuarios</CardTitle>
               </CardHeader>
               <CardContent className="pl-2">
-                <ResponsiveContainer width="100%" height={350}>
-                  <AreaChart data={userGrowthData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Area
-                      type="monotone"
-                      dataKey="users"
-                      stroke="#8884d8"
-                      fill="#8884d8"
-                      fillOpacity={0.3}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
+                <div className="w-full h-[350px] flex items-center justify-center bg-muted/50 rounded-lg">
+                  <div className="text-center">
+                    <TrendingUp className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
+                    <p className="text-muted-foreground">MVP: Gráfica de crecimiento de usuarios</p>
+                    <p className="text-sm text-muted-foreground mt-2">+{stats.newUsersToday} usuarios nuevos hoy</p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
@@ -507,16 +485,16 @@ export function AdminDashboard({ userId }: AdminDashboardProps) {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart data={userGrowthData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="users" stroke="#8884d8" />
-                  <Line type="monotone" dataKey="enrollments" stroke="#82ca9d" />
-                </LineChart>
-              </ResponsiveContainer>
+              <div className="w-full h-[400px] flex items-center justify-center bg-muted/50 rounded-lg">
+                <div className="text-center">
+                  <Users className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
+                  <p className="text-muted-foreground">MVP: Análisis detallado de usuarios</p>
+                  <div className="flex gap-4 mt-4 text-sm">
+                    <div>📈 Usuarios: {formatNumber(stats.totalUsers)}</div>
+                    <div>📚 Matriculas: {formatNumber(stats.totalEnrollments)}</div>
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -530,15 +508,14 @@ export function AdminDashboard({ userId }: AdminDashboardProps) {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={400}>
-                <BarChart data={revenueData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="revenue" fill="#8884d8" />
-                </BarChart>
-              </ResponsiveContainer>
+              <div className="w-full h-[400px] flex items-center justify-center bg-muted/50 rounded-lg">
+                <div className="text-center">
+                  <DollarSign className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
+                  <p className="text-muted-foreground">MVP: Análisis de ingresos mensuales</p>
+                  <p className="text-2xl font-bold mt-4">{formatCurrency(stats.totalRevenue)}</p>
+                  <p className="text-sm text-muted-foreground">Ingresos totales</p>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

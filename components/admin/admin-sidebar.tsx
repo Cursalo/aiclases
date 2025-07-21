@@ -4,10 +4,10 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button-mvp'
 import { Badge } from '@/components/ui/badge'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
+import { ScrollArea } from '@/components/ui/scroll-area-mvp'
+import { Separator } from '@/components/ui/separator-mvp'
 import {
   LayoutDashboard,
   BookOpen,

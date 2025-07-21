@@ -14,10 +14,10 @@ import {
   Award,
   Users
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button-mvp'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Progress } from '@/components/ui/progress'
+import { Progress } from '@/components/ui/progress-mvp'
 
 interface EnrollPageProps {
   params: {

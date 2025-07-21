@@ -1,8 +1,9 @@
 import type { Viewport } from 'next'
 import { Inter } from 'next/font/google'
-import { ThemeProvider } from '@/lib/theme-provider'
-import { Toaster } from '@/components/ui/sonner'
-import { InstallPrompt } from '@/components/pwa/install-prompt'
+// MVP: Remove context-heavy dependencies for deployment
+// import { ThemeProvider } from '@/lib/theme-provider'
+// import { Toaster } from '@/components/ui/sonner'
+// import { InstallPrompt } from '@/components/pwa/install-prompt'
 import { cn } from '@/lib/utils'
 import './globals.css'
 
@@ -46,29 +47,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
         suppressHydrationWarning
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange={false}
-        >
-          {children}
-          <Toaster 
-            position="top-right"
-            expand={true}
-            richColors
-            closeButton
-            toastOptions={{
-              duration: 5000,
-              style: {
-                background: 'var(--background)',
-                color: 'var(--foreground)',
-                border: '1px solid var(--border)',
-              },
-            }}
-          />
-          <InstallPrompt />
-        </ThemeProvider>
+        {/* MVP: Simplified without context providers */}
+        {children}
         
         {/* Analytics */}
         {process.env.NODE_ENV === 'production' && (

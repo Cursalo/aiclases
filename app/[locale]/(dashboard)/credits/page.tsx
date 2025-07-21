@@ -12,10 +12,10 @@ import {
   ShoppingCart,
   Globe
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button-mvp'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs-mvp'
 import { CreditCheckout } from '@/components/checkout/credit-checkout'
 import { MercadoPagoCheckout } from '@/components/checkout/mercadopago-checkout'
 

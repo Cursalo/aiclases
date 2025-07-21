@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button-mvp'
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -11,8 +11,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+} from '@/components/ui/dropdown-menu-mvp'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar-mvp'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { 
@@ -29,8 +29,9 @@ import {
   Moon,
   Monitor
 } from 'lucide-react'
-import { useTheme } from 'next-themes'
-import { motion } from 'framer-motion'
+// MVP: Simple theme management without next-themes
+// import { useTheme } from 'next-themes'
+// import { motion } from 'framer-motion'
 
 interface AdminHeaderProps {
   user: {
@@ -52,7 +53,8 @@ interface Notification {
 
 export function AdminHeader({ user }: AdminHeaderProps) {
   const router = useRouter()
-  const { theme, setTheme } = useTheme()
+  // MVP: Simple theme management without next-themes
+  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system')
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
   const [searchQuery, setSearchQuery] = useState('')
@@ -241,13 +243,11 @@ export function AdminHeader({ user }: AdminHeaderProps) {
               <Button variant="ghost" size="icon" className="relative">
                 <Bell className="h-4 w-4" />
                 {unreadCount > 0 && (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
+                  <div
                     className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-destructive text-destructive-foreground text-xs flex items-center justify-center"
                   >
                     {unreadCount > 9 ? '9+' : unreadCount}
-                  </motion.div>
+                  </div>
                 )}
               </Button>
             </DropdownMenuTrigger>
