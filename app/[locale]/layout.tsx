@@ -95,17 +95,11 @@ export default async function LocaleLayout({
   children,
   params: { locale }
 }: LocaleLayoutProps) {
-
-
   return (
-    <html lang={locale}>
-      <body>
-        <div className="relative flex min-h-screen flex-col">
-          <main className="flex-1">
-            {children}
-          </main>
-        </div>
-      </body>
-    </html>
+    <div className="relative flex min-h-screen flex-col">
+      <main className="flex-1">
+        {children}
+      </main>
+    </div>
   )
 }
