@@ -2,7 +2,8 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button-mvp'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { WifiOff, RefreshCw, Home, BookOpen, MessageCircle } from 'lucide-react'
+import { WifiOff, Home, BookOpen, MessageCircle } from 'lucide-react'
+import { RefreshButton } from '@/components/offline/refresh-button'
 
 export const metadata: Metadata = {
   title: 'Sin Conexión | AIClases 4.0',
@@ -35,13 +36,7 @@ export default function OfflinePage() {
           </div>
 
           <div className="space-y-3">
-            <Button 
-              className="w-full"
-              onClick={() => window.location.reload()}
-            >
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Reintentar
-            </Button>
+            <RefreshButton />
             
             <Button 
               variant="outline" 

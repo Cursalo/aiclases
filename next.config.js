@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 // MVP: Simplified config without PWA for deployment
 
+const createNextIntlPlugin = require('next-intl/plugin')
+const withNextIntl = createNextIntlPlugin('./i18n.ts')
+
 const nextConfig = {
   images: {
     domains: [
@@ -84,4 +87,4 @@ const nextConfig = {
   swcMinify: true,
 }
 
-module.exports = nextConfig
+module.exports = withNextIntl(nextConfig)
