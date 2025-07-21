@@ -1,6 +1,4 @@
-'use client'
-
-import { Header } from './header'
+import { HeaderStatic } from './header-static'
 
 interface MainLayoutProps {
   children: React.ReactNode
@@ -9,7 +7,7 @@ interface MainLayoutProps {
 export function MainLayout({ children }: MainLayoutProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <Header />
+      <HeaderStatic />
       <main className="container mx-auto px-4 py-8 max-w-7xl">
         {children}
       </main>
