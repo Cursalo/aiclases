@@ -68,15 +68,34 @@ export const stripe = {
   },
   subscriptions: {
     retrieve: async (subscriptionId: string) => ({
+      id: subscriptionId,
+      object: 'subscription',
       customer: 'mock_customer_id',
       items: {
+        object: 'list',
         data: [{
+          id: 'si_mock',
+          object: 'subscription_item',
           price: {
             id: 'mock_price_id',
             product: 'mock_product_id'
-          }
-        }]
-      }
+          },
+          quantity: 1
+        }],
+        has_more: false,
+        total_count: 1,
+        url: '/v1/subscription_items'
+      },
+      status: 'active',
+      current_period_start: Math.floor(Date.now() / 1000),
+      current_period_end: Math.floor(Date.now() / 1000) + 2592000,
+      created: Math.floor(Date.now() / 1000),
+      metadata: {},
+      cancel_at_period_end: false,
+      canceled_at: null,
+      ended_at: null,
+      trial_start: null,
+      trial_end: null
     })
   },
   checkout: {

@@ -244,7 +244,7 @@ async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
     // Handle recurring subscription payment
     const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string)
     // Add monthly credits for subscription users
-    await addSubscriptionCredits(subscription)
+    await addSubscriptionCredits(subscription as any)
   }
 }
 
